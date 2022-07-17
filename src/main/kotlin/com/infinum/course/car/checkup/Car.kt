@@ -1,3 +1,7 @@
 package com.infinum.course.car.checkup
 
-data class Car constructor (val manufacturer: String, val model:String, val vin:String)
+import java.time.LocalDate
+
+data class Car constructor (val createdOn: LocalDate, val manufacturer: String, val model:String, val productionYear: Int, val vin:String,var checkUps: MutableList<CarCheckUp> = mutableListOf()){
+
+}

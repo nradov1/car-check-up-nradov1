@@ -1,6 +1,8 @@
 plugins {
-    kotlin("jvm") version "1.7.0"
-    id("org.jetbrains.kotlin.plugin.spring") version "1.7.0" // New plugin
+    id("org.springframework.boot") version "2.7.1" // Defines version of Spring Boot
+    id("io.spring.dependency-management") version "1.0.11.RELEASE" // Handles Spring
+            kotlin("jvm") version "1.7.0"
+    kotlin("plugin.spring") version "1.7.0"
 }
 
 group = "com.infinum.course"
@@ -11,16 +13,17 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
-    // New dependencies
-    implementation("org.springframework:spring-context:5.3.20")
-    implementation("junit:junit:4.13.1")
-    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
-    testImplementation("org.springframework:spring-test:5.3.20")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testImplementation("org.assertj:assertj-core:3.23.1")
-    testImplementation("io.mockk:mockk:1.12.4")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")// Adds web
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.eclipse.jetty:jetty-servlet:11.0.11")
+    testImplementation("org.springframework.boot:spring-boot-starter-test") // Adds
+    testImplementation("com.ninja-squad:springmockk:3.1.1") // Used for using Mockk
 }
+
 
 tasks.withType<Test> {
     useJUnitPlatform()

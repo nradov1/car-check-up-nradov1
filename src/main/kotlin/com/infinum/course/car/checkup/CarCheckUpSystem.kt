@@ -7,29 +7,33 @@ import java.time.LocalDateTime
 
 
 @Service
-class CarCheckUpSystem(@Qualifier("inMemoryRepo")val repo: CarCheckUpRepository){
+class CarCheckUpSystem(val repo: InMemoryCarCheckUpRepository){
 
 
-private fun findCar(vin: String): Car {
-    val checks = repo.findAll().values.filter{ CarCheckUp -> CarCheckUp.car.vin == vin}
-    if(checks.isEmpty()) throw Exception("Car not found!")
-    else return checks[0].car
-}
-fun addCheckUp(vin: String): CarCheckUp {
-    val car = findCar(vin)
-    repo.insert(LocalDateTime.now(),car)
-    return CarCheckUp(repo.findAll().values.maxOf { CarCheckUp -> CarCheckUp.id }, LocalDateTime.now(), car)
+fun findCar(id:Long): Car = repo.findCarById(id)
+fun addCheckUp(id: Long, workerName:String, price:Int):CarCheckUp{
+    val car = findCar(id)
+    return repo.insertCheckUp(LocalDateTime.now(),car,workerName,price,id)
 }
 
-fun getCheckUps(vin: String): List<CarCheckUp> {
-    findCar(vin)
-    return repo.findAll().values.filter { CarCheckUp -> CarCheckUp.car.vin == vin }
+fun getCheckUps(id:Long): List<CarCheckUp> = findCar(id).checkUps
 
+fun addCar(manufacturer: String, model:String,productionYear: Int, vin:String) : Car = repo.insertCar(manufacturer, model,productionYear, vin)
+
+fun getManufacturers() : MutableSet<String>{
+    var cars = repo.findAllCars().values
+    var manufacturers : MutableSet<String> = mutableSetOf()
+    for (car in cars){
+        manufacturers.add(car.manufacturer)
+    }
+    return manufacturers
 }
 
-fun countCheckUps(manufacturer: String): Int =
-    repo.findAll().values.count { CarCheckUp -> CarCheckUp.car.manufacturer == manufacturer }
+    fun countCheckUps(manufacturer: String): Int =
+    repo.findAllCheckUps().values.count { CarCheckUp -> CarCheckUp.car.manufacturer == manufacturer }
 
-fun isCheckUpNecessary(vin: String): Boolean =
-    getCheckUps(vin).none { CarCheckUp -> CarCheckUp.performedAt.plusYears(1) >= LocalDateTime.now() }
+fun isCheckUpNecessary(id:Long): Boolean =
+    getCheckUps(id).none { CarCheckUp -> CarCheckUp.performedAt.plusYears(1) >= LocalDateTime.now() }
 }
+
+
