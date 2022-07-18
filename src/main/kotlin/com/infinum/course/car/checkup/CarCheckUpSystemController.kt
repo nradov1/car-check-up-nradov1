@@ -1,12 +1,8 @@
 package com.infinum.course.car.checkup
 
-import org.springframework.core.io.ByteArrayResource
-import org.springframework.core.io.Resource
-import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,13 +13,18 @@ import org.springframework.web.bind.annotation.ResponseBody
 @Controller
 class CarCheckUpSystemController(private val carCheckUpSystem: CarCheckUpSystem) {
     @GetMapping("/car-details/{id}")
-    fun carDetails(@PathVariable id: Long): String{
+    @ResponseBody
+    fun carDetails(@PathVariable id: Long): ResponseEntity<CarDetails> {
         val car = carCheckUpSystem.findCar(id)
         car.checkUps.sortByDescending { CarCheckUp -> CarCheckUp.performedAt }
-        if(carCheckUpSystem.isCheckUpNecessary(id)===true)
-        return car.toString() + "\n Car checkup necessary!"
-        else
-            return car.toString()
+        CarDetails.manufacturer = car.manufacturer
+        CarDetails.model= car.model
+        CarDetails.productionYear = car.productionYear
+        CarDetails.vin = car.vin
+        CarDetails.checkUps = car.checkUps
+        if(carCheckUpSystem.isCheckUpNecessary(id)==true)
+        CarDetails.checkUpNeccessity = true
+        return ResponseEntity(CarDetails,HttpStatus.OK)
     }
     @GetMapping("/manufacturer-analytics")
     @ResponseBody
@@ -38,14 +39,16 @@ class CarCheckUpSystemController(private val carCheckUpSystem: CarCheckUpSystem)
 
     @PostMapping("/create-car")
     @ResponseBody
-    fun createCar(@RequestBody car: Car): ResponseEntity<Car> {
+    fun createCar(@RequestBody car: CarDetails): ResponseEntity<Car> {
         val newCar = carCheckUpSystem.addCar(car.manufacturer,car.model,car.productionYear,car.vin)
         return ResponseEntity(newCar, HttpStatus.OK)
     }
-    @PostMapping("/create-checkup/")
+
+
+    @PostMapping("/create")
     @ResponseBody
-    fun createCheckUps(@RequestBody carCheckUp: CarCheckUp): ResponseEntity<CarCheckUp> {
-        val newCarCheckUp = carCheckUpSystem.addCheckUp(carCheckUp.carID,carCheckUp.workerName,carCheckUp.price)
-        return ResponseEntity(newCarCheckUp, HttpStatus.OK)
+    fun createCheckUps(@RequestBody carCheckUp: CheckUpDetails): ResponseEntity<CarCheckUp>{
+        val newCarCheckUp = carCheckUpSystem.addCheckUp(carCheckUp.carID.toLong(),carCheckUp.workerName,carCheckUp.price)
+        return ResponseEntity(newCarCheckUp,HttpStatus.OK)
     }
 }

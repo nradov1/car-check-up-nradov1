@@ -10,7 +10,7 @@ import org.springframework.boot.runApplication
 @SpringBootApplication
 class CarCheckUpApplication
 fun main(args: Array<String>){
-    runApplication<SpringBootApplication>(*args)
+    runApplication<CarCheckUpApplication>(*args)
 }
 
 
