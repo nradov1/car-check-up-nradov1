@@ -15,10 +15,6 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")// Adds web
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.eclipse.jetty:jetty-servlet:11.0.11")
     testImplementation("org.springframework.boot:spring-boot-starter-test") // Adds
     testImplementation("com.ninja-squad:springmockk:3.1.1") // Used for using Mockk
 }
