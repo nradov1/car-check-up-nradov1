@@ -1,5 +1,8 @@
 plugins {
-    kotlin("jvm") version "1.7.0"
+    id("org.springframework.boot") version "2.7.1" // Defines version of Spring Boot
+    id("io.spring.dependency-management") version "1.0.11.RELEASE" // Handles Spring
+            kotlin("jvm") version "1.7.0"
+    kotlin("plugin.spring") version "1.7.0"
 }
 
 group = "com.infinum.course"
@@ -10,5 +13,13 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")// Adds web
+    testImplementation("org.springframework.boot:spring-boot-starter-test") // Adds
+    testImplementation("com.ninja-squad:springmockk:3.1.1") // Used for using Mockk
+}
+
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
