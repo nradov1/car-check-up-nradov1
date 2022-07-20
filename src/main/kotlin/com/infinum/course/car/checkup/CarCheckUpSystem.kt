@@ -13,7 +13,7 @@ class CarCheckUpSystem(){
         2L to Car(LocalDate.parse("2022-01-02"),"Toyota","Aygo",2019,"83JDFIUFUJT5RIIG"),
         3L to Car(LocalDate.parse("2019-02-03"),"BMW","116d",2016,"38RDUFJTGUGZ9Z9O6KT"))
     val carCheckUps = mutableMapOf<Long, CarCheckUp>(
-        1L to CarCheckUp(LocalDateTime.now(),Car(LocalDate.parse("2022-01-02"),"Toyota","Aygo",2019,"83JDFIUFUJT5RIIG"),"Peter",2999,2L)
+        1L to CarCheckUp(LocalDateTime.now(),"Peter",2999,2L)
     )
 
 
@@ -25,7 +25,7 @@ fun addCheckUp(id: Long, workerName:String, price:Int):CarCheckUp?{
     val car = findCar(id)
     val idCheckUp = (carCheckUps.keys.maxOrNull() ?: 0) + 1
     carCheckUps.put(idCheckUp,
-        CarCheckUp(performedAt = LocalDateTime.now(), car = car, workerName = workerName,price=price, carID = id))
+        CarCheckUp(performedAt = LocalDateTime.now(),workerName = workerName,price=price, carID = id))
     return carCheckUps[idCheckUp]
 }
 
@@ -47,7 +47,7 @@ fun getManufacturers() : MutableSet<String>{
 }
 
     fun countCheckUps(manufacturer: String): Int =
-    this.carCheckUps.values.count { CarCheckUp -> CarCheckUp.car.manufacturer == manufacturer }
+    this.carCheckUps.values.count { CarCheckUp -> cars[CarCheckUp.carID]?.manufacturer == manufacturer }
 
 fun isCheckUpNecessary(id:Long): Boolean =
     getCheckUps(id).none { CarCheckUp -> CarCheckUp?.performedAt?.plusYears(1)!! >= LocalDateTime.now() }

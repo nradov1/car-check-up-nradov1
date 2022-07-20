@@ -2,6 +2,7 @@ package com.infinum.course.car.checkup
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -11,7 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody
 
 
 @Controller
-class CarCheckUpSystemController(private val carCheckUpSystem: CarCheckUpSystem) {
+class CarCheckUpSystemController(private val carCheckUpSystem: CarCheckUpSystem,
+        private val jdbcTemplate: JdbcTemplate
+) {
+
     @GetMapping("/car-details/{id}")
     @ResponseBody
     fun carDetails(@PathVariable id: Long): ResponseEntity<CarDetails> {

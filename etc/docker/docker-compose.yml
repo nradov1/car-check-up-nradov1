@@ -1,0 +1,18 @@
+version: "3"
+
+# docker run --rm --name courses-database -v car-data:/var/lib/postgresql/data -p 5432:5432
+# -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=CarCheckUps-db -d postgres:13-alpine
+#napravila sam docker-compose up u cmd-u i pise mi:database ready for connections
+services:
+  car-database:
+    image: "postgres:13-alpine"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "CarCheckUp-db-data:/var/lib/postgresql/data"
+    environment:
+      - "POSTGRES_USER=admin"
+      - "POSTGRES_PASSWORD=admin"
+      - "POSTGRES_DB=CarCheckUps-db"
+volumes:
+  CarCheckUp-db-data:
