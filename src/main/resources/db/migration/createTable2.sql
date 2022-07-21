@@ -1,1 +1,0 @@
-create table CheckUp(id bigserial primary key, performedAt text, workerName text, price int, carID int);

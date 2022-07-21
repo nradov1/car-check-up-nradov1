@@ -23,6 +23,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
+    // https://mvnrepository.com/artifact/com.h2database/h2
+    runtimeOnly("com.h2database:h2:2.1.214")
 }
 
 

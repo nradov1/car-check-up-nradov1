@@ -1,1 +1,0 @@
-create table car(id bigserial primary key, manufacturer text, model text, productionYear int, vin text, createdOn text);
