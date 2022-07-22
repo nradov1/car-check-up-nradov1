@@ -18,16 +18,14 @@ class RepositoryTest {
     @Autowired
     lateinit var jdbcTemplate: NamedParameterJdbcTemplate
 
-    @BeforeEach
-    fun setUp() {
 
-        //jdbcTemplate.execute("CREATE TABLE cars(id bigserial primary key,manufacturer text,model text,productionYear int,vin text,createdOn text)")
+    fun setUp() {
         jdbcTemplate.update(
             "INSERT INTO cars (manufacturer,model,productionYear,vin,createdOn) VALUES (:manufacturer,:model,:productionYear,:vin,:createdOn)",
             mapOf("manufacturer" to "Porsche",
                 "model" to "Taycan",
                 "productionYear" to 2018,
-                "vin" to "983RHGIUF394",
+                "vin" to "T4B9THB05ZNN",
                 "createdOn" to LocalDate.now().toString()
                 )
         )
@@ -35,6 +33,7 @@ class RepositoryTest {
 
     @Test
     fun test() {
+        setUp()
         Assertions.assertThat(
             jdbcTemplate.queryForObject(
                 "SELECT manufacturer FROM cars WHERE model = :name",
@@ -48,8 +47,8 @@ class RepositoryTest {
     fun test2() {
         Assertions.assertThat(
             jdbcTemplate.queryForObject(
-                "SELECT count(*) FROM courses WHERE model = :name",
-                mapOf("name" to "Taycan"),
+                "SELECT count(*) FROM cars WHERE vin = :vin",
+                mapOf("vin" to "T4B9THB05ZNN"),
                 Int::class.java
             )
         ).isEqualTo(1)
