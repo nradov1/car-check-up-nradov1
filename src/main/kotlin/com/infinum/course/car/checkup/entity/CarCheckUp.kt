@@ -1,4 +1,4 @@
-package com.infinum.course.car.checkup
+package com.infinum.course.car.checkup.entity
 
 import java.time.LocalDateTime
 

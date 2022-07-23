@@ -1,15 +1,13 @@
 package com.infinum.course.car.checkup.repository
 
-import com.infinum.course.car.checkup.Car
-import com.infinum.course.car.checkup.CarCheckUp
-import org.springframework.jdbc.core.JdbcTemplate
+import com.infinum.course.car.checkup.entity.Car
+import com.infinum.course.car.checkup.entity.CarCheckUp
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import java.sql.ResultSet
 import java.time.LocalDate
 import java.time.LocalDateTime
-import javax.print.attribute.standard.PrinterMoreInfoManufacturer
 
 
 @Repository
@@ -58,11 +56,11 @@ class CarCheckUpRepository(private val jdbcTemplate: NamedParameterJdbcTemplate)
             "SELECT * FROM checkUps WHERE carID = :id",mapOf("id" to id),rowMapper
         )
     }
-    fun analytics(): MutableList<String> {
+    fun analytics(): MutableList<Pair<String,Int>> {
 
-        var rowMapper: RowMapper<String> =
-            RowMapper<String> { resultSet: ResultSet, rowIndex: Int ->
-                (resultSet.getString("manufacturer").toString() + ": " + resultSet.getInt("checkups").toString())
+        var rowMapper: RowMapper<Pair<String,Int>> =
+            RowMapper<Pair<String,Int>> { resultSet: ResultSet, rowIndex: Int ->
+                Pair(resultSet.getString("manufacturer").toString(),resultSet.getInt("checkups"))
             }
 
         var results = jdbcTemplate.query(

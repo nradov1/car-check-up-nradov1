@@ -1,9 +1,13 @@
-package com.infinum.course.car.checkup
+package com.infinum.course.car.checkup.controller
 
+import com.infinum.course.car.checkup.helpers.CarDetails
+import com.infinum.course.car.checkup.helpers.CarNotFoundException
+import com.infinum.course.car.checkup.helpers.CheckUpDetails
+import com.infinum.course.car.checkup.entity.Car
+import com.infinum.course.car.checkup.entity.CarCheckUp
 import com.infinum.course.car.checkup.repository.CarCheckUpRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -15,9 +19,7 @@ import java.time.LocalDateTime
 
 
 @Controller
-class CarCheckUpSystemController(private val carCheckUpRepository: CarCheckUpRepository,
-        private val jdbcTemplate: NamedParameterJdbcTemplate
-
+class CarCheckUpSystemController(private val carCheckUpRepository: CarCheckUpRepository
 ) {
 
    @GetMapping("/car-details")
@@ -25,9 +27,11 @@ class CarCheckUpSystemController(private val carCheckUpRepository: CarCheckUpRep
     fun carDetails( @RequestParam("id") id: Int): ResponseEntity<CarDetails> {
        val car = carCheckUpRepository.findCar(id.toLong())
        val checkups = carCheckUpRepository.getCheckups(id)
-       val neccessity = checkups.none { CarCheckUp -> CarCheckUp?.performedAt?.plusYears(1)!! >= LocalDateTime.now() }
-       val carDetails = CarDetails(car!!.manufacturer,car.model,car.productionYear,car.vin,checkups,neccessity)
-       return ResponseEntity(carDetails,HttpStatus.OK)
+       val necessity = checkups.none { CarCheckUp -> CarCheckUp.performedAt.plusYears(1) >= LocalDateTime.now() }
+       if(car==null)
+           throw CarNotFoundException(id.toLong())
+       else
+           return ResponseEntity(CarDetails(car.manufacturer,car.model,car.productionYear,car.vin,checkups,necessity),HttpStatus.OK)
         }
 
     @GetMapping("/manufacturer-analytics")
@@ -46,11 +50,17 @@ class CarCheckUpSystemController(private val carCheckUpRepository: CarCheckUpRep
     @PostMapping("/create")
     @ResponseBody
     fun createCheckUps(@RequestBody carCheckUp: CheckUpDetails): ResponseEntity<CarCheckUp?>{
-        if(carCheckUpRepository.findCar(carCheckUp.carID.toLong())==null)
-            throw CarNotFoundException(carCheckUp.carID.toLong())
-        carCheckUpRepository.insertCheckUp(carCheckUp.workerName,LocalDateTime.now().toString(),carCheckUp.carID,carCheckUp.price)
-        //val newCarCheckUp = carCheckUpSystem.addCheckUp(carCheckUp.carID.toLong(),carCheckUp.workerName,carCheckUp.price)
-        return ResponseEntity(CarCheckUp(LocalDateTime.now(),carCheckUp.workerName,carCheckUp.price,carCheckUp.carID.toLong()),HttpStatus.OK)
+        if(carCheckUpRepository.findCar(CheckUpDetails.carID.toLong())==null)
+            throw CarNotFoundException(CheckUpDetails.carID.toLong())
+        carCheckUpRepository.insertCheckUp(
+            CheckUpDetails.workerName,LocalDateTime.now().toString(),
+            CheckUpDetails.carID,
+            CheckUpDetails.price
+        )
+        return ResponseEntity(CarCheckUp(LocalDateTime.now(),
+            CheckUpDetails.workerName,
+            CheckUpDetails.price,
+            CheckUpDetails.carID.toLong()),HttpStatus.OK)
     }
 
 }
