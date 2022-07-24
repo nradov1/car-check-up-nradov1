@@ -1,8 +1,8 @@
-CREATE TABLE IF NOT EXISTS checkups(
+CREATE TABLE IF NOT EXISTS check_ups(
     id bigserial primary key,
-    workerName text,
+    worker_name text,
     price int,
-    performedAt text,
-    carID int,
-    foreign key (carID) references cars(id)
+    performed_at text,
+    car_id int constraint carcheckup_fk references car(id)
+
 );

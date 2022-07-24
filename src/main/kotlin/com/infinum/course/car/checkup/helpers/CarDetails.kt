@@ -1,6 +1,6 @@
 package com.infinum.course.car.checkup.helpers
 
-import com.infinum.course.car.checkup.entity.CarCheckUp
+import com.infinum.course.car.checkup.checkup.entity.CarCheckUp
 
 
 data class CarDetails(var manufacturer:String="",
