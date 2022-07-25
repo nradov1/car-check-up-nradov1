@@ -1,56 +1,51 @@
 package com.infinum.course.car.checkup
 
-import org.assertj.core.api.Assertions
+import com.infinum.course.car.checkup.car.entity.Car
+import com.infinum.course.car.checkup.checkup.entity.CarCheckUp
+import com.infinum.course.car.checkup.checkup.repository.CheckUpRepository
+import com.infinum.course.car.checkup.repository.CarRepository
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import org.springframework.test.annotation.Commit
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.data.domain.PageRequest
 import java.time.LocalDate
+import java.time.LocalDateTime
 
-@JdbcTest
+@DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Commit
-class RepositoryTest {
+class RepositoryTest @Autowired constructor(val carRepository: CarRepository, val checkUpRepository: CheckUpRepository) {
 
-    @Autowired
-    lateinit var jdbcTemplate: NamedParameterJdbcTemplate
-
-
+    @BeforeEach
     fun setUp() {
-        jdbcTemplate.update(
-            "INSERT INTO cars (manufacturer,model,productionYear,vin,createdOn) VALUES (:manufacturer,:model,:productionYear,:vin,:createdOn)",
-            mapOf("manufacturer" to "Porsche",
-                "model" to "Taycan",
-                "productionYear" to 2018,
-                "vin" to "T4B9THB05ZNN",
-                "createdOn" to LocalDate.now().toString()
-                )
-        )
+        val car1 = carRepository.save(Car(0,LocalDate.now().toString(),"Porsche","Taycan",2018,"0UM9VMCT8MV"))
+        val car2 = carRepository.save(Car(0,LocalDate.now().toString(),"Porsche","Macan",2020,"85NV985NB6BN9B"))
+        val car3 = carRepository.save(Car(0,LocalDate.now().toString(),"Rolls Royce","Neki kul",2017,"98VN2FMFKEJEC"))
+        checkUpRepository.save(CarCheckUp(0, LocalDateTime.now(),"Perica",1999,car1))
+        checkUpRepository.save(CarCheckUp(0, LocalDateTime.now(),"Ivica",7999,car2))
+        checkUpRepository.save(CarCheckUp(0, LocalDateTime.now(),"Luka",8999,car3))
     }
 
     @Test
     fun test() {
-        setUp()
-        Assertions.assertThat(
-            jdbcTemplate.queryForObject(
-                "SELECT manufacturer FROM cars WHERE model = :name",
-                mapOf("name" to "Taycan"),
-                String::class.java
-            )
-        ).isEqualTo("Porsche")
+        val car = carRepository.findCarById(1)
+        assertThat(car).isNotNull
     }
 
     @Test
     fun test2() {
-        Assertions.assertThat(
-            jdbcTemplate.queryForObject(
-                "SELECT count(*) FROM cars WHERE vin = :vin",
-                mapOf("vin" to "T4B9THB05ZNN"),
-                Int::class.java
-            )
-        ).isEqualTo(1)
+        val analytics = checkUpRepository.analytics()
+        assertThat(analytics.size).isEqualTo(2)
     }
+
+    @Test
+    fun pageable() {
+        val pageable = PageRequest.of(0, 2)
+        val allCars = carRepository.findAll(pageable)
+        assertThat(allCars.totalPages).isEqualTo(2)
+        assertThat(allCars.content[0].manufacturer).isEqualTo("Porsche")
+    }
+
 }

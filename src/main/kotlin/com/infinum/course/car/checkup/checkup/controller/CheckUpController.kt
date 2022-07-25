@@ -2,7 +2,6 @@ package com.infinum.course.car.checkup.checkup.controller
 
 import com.infinum.course.car.checkup.checkup.entity.CarCheckUp
 import com.infinum.course.car.checkup.checkup.service.CheckUpSystem
-import com.infinum.course.car.checkup.helpers.CarNotFoundException
 import com.infinum.course.car.checkup.helpers.CheckUpDetails
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -21,6 +20,8 @@ class CheckUpController(
     @GetMapping("/manufacturer-analytics")
     @ResponseBody
     fun analytics()=checkUpService.analytics()
+
+
 
     @GetMapping("/checkups/paged")
     fun getAllCheckups(@RequestBody id:Long,pageable: Pageable)=checkUpService.getAllCheckups(pageable,id)
