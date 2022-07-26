@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS car(
     manufacturer text,
     model text,
     production_year int,
-    created_on text
+    created_on timestamp
 );

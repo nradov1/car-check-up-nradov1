@@ -17,5 +17,7 @@ data class CarCheckUp(
     val price: Int,
 
     @ManyToOne
+    @JoinColumn(name="car_id")
     val car: Car
+
 )

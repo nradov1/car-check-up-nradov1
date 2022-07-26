@@ -1,4 +1,4 @@
-package com.infinum.course.car.checkup.helpers
+package com.infinum.course.car.checkup.car.controller
 
 import com.infinum.course.car.checkup.checkup.entity.CarCheckUp
 

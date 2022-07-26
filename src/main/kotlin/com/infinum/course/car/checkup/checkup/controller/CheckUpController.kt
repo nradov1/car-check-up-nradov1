@@ -1,8 +1,7 @@
 package com.infinum.course.car.checkup.checkup.controller
 
 import com.infinum.course.car.checkup.checkup.entity.CarCheckUp
-import com.infinum.course.car.checkup.checkup.service.CheckUpSystem
-import com.infinum.course.car.checkup.helpers.CheckUpDetails
+import com.infinum.course.car.checkup.checkup.service.CheckUpService
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
 class CheckUpController(
-    private val checkUpService: CheckUpSystem
+    private val checkUpService: CheckUpService
 ) {
     @GetMapping("/manufacturer-analytics")
     @ResponseBody
@@ -24,7 +23,7 @@ class CheckUpController(
 
 
     @GetMapping("/checkups/paged")
-    fun getAllCheckups(@RequestBody id:Long,pageable: Pageable)=checkUpService.getAllCheckups(pageable,id)
+    fun getAllCheckups(pageable: Pageable)=checkUpService.getAllCheckups(pageable)
 
     @PostMapping("/create")
     @ResponseBody

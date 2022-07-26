@@ -1,9 +1,6 @@
 package com.infinum.course.car.checkup.car.controller
 
-import com.infinum.course.car.checkup.helpers.CarDetails
-import com.infinum.course.car.checkup.helpers.CarNotFoundException
-
-import com.infinum.course.car.checkup.car.service.CarSystem
+import com.infinum.course.car.checkup.car.service.CarService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -13,25 +10,18 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.data.domain.Pageable
-import java.time.LocalDateTime
 
 
 @Controller
 class CarController(
-    private val carService: CarSystem
+    private val carService: CarService
 ) {
 
     //getCheckups??
    @GetMapping("/car-details")
     @ResponseBody
-    fun carDetails( @RequestParam("id") id: Int): ResponseEntity<CarDetails> {
-       val car = carService.findCar(id.toLong())
-        if(car==null)
-            throw CarNotFoundException(id.toLong())
-       val checkups = carService.getCheckups(car)
-       val necessity = checkups.none { CarCheckUp -> CarCheckUp.performedAt.plusYears(1) >= LocalDateTime.now() }
-           return ResponseEntity(CarDetails(car.manufacturer,car.model,car.productionYear,car.vin,checkups,necessity),HttpStatus.OK)
-        }
+    fun carDetails( @RequestParam("id") id: Int)= ResponseEntity(carService.getCarDetails(id.toLong()),HttpStatus.OK)
+
 
     @GetMapping("cars-paged")
     fun getAllCars(pageable: Pageable) = ResponseEntity.ok(carService.findAllCars(pageable))

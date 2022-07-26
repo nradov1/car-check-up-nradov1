@@ -1,4 +1,4 @@
-package com.infinum.course.car.checkup.helpers
+package com.infinum.course.car.checkup.checkup.controller
 
 object CheckUpDetails {
     var price:Int=0
