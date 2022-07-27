@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  car-database:
+    image: postgres:12.11-alpine
+    restart: always
+    ports:
+      - '5433:5432'
+    volumes:
+      - CarCheckUp-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=CarCheckUps-db
+volumes:
+  CarCheckUp-db-data:
