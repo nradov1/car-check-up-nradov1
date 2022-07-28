@@ -12,7 +12,7 @@ interface CheckUpRepository:JpaRepository<CarCheckUp,Long>{
 
     fun save(checkUp : CarCheckUp): CarCheckUp
 
-    @Query(nativeQuery = true,value="select c.manufacturer,count(*) as checkups from check_ups b,car c where c.id=b.car_id group by c.manufacturer")
+    @Query(nativeQuery = true,value="select d.manufacturer,count(*) as checkups from check_ups b,car c,car_models d where c.id=b.car_id and c.car_model_id=d.id group by d.manufacturer")
     fun analytics():List<Analytics>
 
 }
