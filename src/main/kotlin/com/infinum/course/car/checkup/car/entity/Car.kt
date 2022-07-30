@@ -1,5 +1,6 @@
 package com.infinum.course.car.checkup.car.entity
 
+import com.infinum.course.car.checkup.carmodel.entity.CarModels
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -11,8 +12,10 @@ data class Car constructor (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
     val createdOn: LocalDateTime,
-    val manufacturer: String,
-    val model:String,
     val productionYear: Int,
-    val vin:String
+    val vin:String,
+
+    @ManyToOne
+    @JoinColumn(name="car_model_id")
+    val carModel: CarModels
     )
