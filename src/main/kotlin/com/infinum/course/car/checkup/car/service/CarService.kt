@@ -19,6 +19,7 @@ class CarService(
                    private val checkUpRepository: CheckUpRepository,
                    private val carModelRepository: CarModelRepository
 ) {
+
     fun addCar(car: CarDetails): Car {
         val car_model = carModelRepository.findByManufacturerAndModel(car.manufacturer,car.model)
             ?: throw CarModelError(car.manufacturer,car.model)
