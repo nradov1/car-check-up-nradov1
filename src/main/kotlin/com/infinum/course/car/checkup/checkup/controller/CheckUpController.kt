@@ -23,6 +23,7 @@ class CheckUpController(
 
 
     @GetMapping("/checkups/paged")
+    @ResponseBody
     fun getAllCheckups(pageable: Pageable)=checkUpService.getAllCheckups(pageable)
 
     @PostMapping("/create")

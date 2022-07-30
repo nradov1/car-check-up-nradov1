@@ -10,6 +10,7 @@ import com.infinum.course.car.checkup.exceptions.CarNotFoundException
 import com.infinum.course.car.checkup.repository.CarRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Service
@@ -20,9 +21,8 @@ class CarService(
 ) {
     fun addCar(car: CarDetails): Car {
         val car_model = carModelRepository.findByManufacturerAndModel(car.manufacturer,car.model)
-        if(car_model==null)
-            throw CarModelError(car.manufacturer,car.model)
-       return carRepository.save(Car(0, LocalDateTime.now(),car.productionYear,car.vin,car_model))
+            ?: throw CarModelError(car.manufacturer,car.model)
+        return carRepository.save(Car(0, LocalDateTime.now(),car.productionYear,car.vin,car_model))
     }
     fun findCar(id:Long) = carRepository.findCarById(id)
 
@@ -30,6 +30,7 @@ class CarService(
 
     fun findAllCars(pageable: Pageable) = carRepository.findAll(pageable)
 
+    @Transactional
     fun getCarDetails(id:Long): CarDetails {
         val car = findCar(id)
         if(car==null)
