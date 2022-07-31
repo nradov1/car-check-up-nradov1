@@ -22,4 +22,7 @@ class CheckUpService(
 
     }
     fun getAllCheckups(pageable: Pageable) = checkUpRepository.findAll(pageable)
+
+    fun findByCarId(id:Long,pageable: Pageable)=checkUpRepository.findByCarIdOrderByPerformedAtDesc(id,pageable)
+    fun findByCarIdAsc(id:Long,pageable: Pageable)=checkUpRepository.findByCarIdOrderByPerformedAtAsc(id,pageable)
 }

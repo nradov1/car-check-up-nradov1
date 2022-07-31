@@ -44,7 +44,7 @@ class RepositoryTest @Autowired constructor(val carRepository: CarRepository,
     @Test
     fun test2() {
         val analytics = checkUpRepository.analytics()
-        assertThat(analytics.size).isEqualTo(2)
+        assertThat(analytics.size).isEqualTo(3)
     }
 
     @Test
@@ -52,7 +52,7 @@ class RepositoryTest @Autowired constructor(val carRepository: CarRepository,
         val pageable = PageRequest.of(0, 2)
         val allCars = carRepository.findAll(pageable)
         assertThat(allCars.totalPages).isEqualTo(2)
-        assertThat(allCars.content[0].carModel.manufacturer).isEqualTo("Porsche")
+        assertThat(allCars.content[0].carModel.manufacturer).isEqualTo("Citroen")
     }
 
 }

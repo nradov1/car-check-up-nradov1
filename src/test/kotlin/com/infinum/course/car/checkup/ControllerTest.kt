@@ -38,19 +38,19 @@ class ControllerTest @Autowired constructor(
 
     @Test
     fun test() {
-        mockMvc.post("/create-car") {
+        mockMvc.post("/api/v1/car") {
             content = objectMapper.writeValueAsString(CarDetails("Porsche","Panamera",2019,"94JGF8G5H9FI4FR"))
             contentType = MediaType.APPLICATION_JSON
         }.andExpect {
-            status { isOk() }
+            status { is2xxSuccessful() }
         }
 
     }
 
     @Test
     fun test2() {
-        mockMvc.get("/car-details") {
-            param("id", "1")
+        mockMvc.get("/api/v1/car/1") {
+            //param("id", "1")
         }
             .andExpect { status { isOk() } }
     }
