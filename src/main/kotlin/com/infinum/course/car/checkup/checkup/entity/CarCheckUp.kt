@@ -2,6 +2,8 @@ package com.infinum.course.car.checkup.checkup.entity
 
 
 import com.infinum.course.car.checkup.car.entity.Car
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -17,6 +19,7 @@ data class CarCheckUp(
     val price: Int,
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name="car_id")
     val car: Car
 

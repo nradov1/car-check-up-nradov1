@@ -21,7 +21,6 @@ class CarController(
     private val resourceAssembler: CarResourceAssembler
 ) {
 
-    //getCheckups??
    @GetMapping("/{id}")
     @ResponseBody
     fun carDetails( @PathVariable("id") id: Long): ResponseEntity<CarResource> {
@@ -39,6 +38,13 @@ class CarController(
                 resourceAssembler
             )
         )
+    }
+    @GetMapping("delete/{id}")
+    @ResponseBody
+    fun carDelete( @PathVariable("id") id: Long): ResponseEntity<Car> {
+        val car = carService.findCar(id)
+        carService.deleteById(id)
+        return ResponseEntity.ok(car)
     }
 
     @PostMapping

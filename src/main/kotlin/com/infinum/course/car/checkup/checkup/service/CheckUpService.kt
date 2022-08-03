@@ -21,8 +21,13 @@ class CheckUpService(
         return checkUpRepository.save(CarCheckUp(0, LocalDateTime.now(),checkUp.workerName,checkUp.price,car))
 
     }
-    fun getAllCheckups(pageable: Pageable) = checkUpRepository.findAll(pageable)
+    fun findById(id:Long) = checkUpRepository.findById(id)
 
     fun findByCarId(id:Long,pageable: Pageable)=checkUpRepository.findByCarIdOrderByPerformedAtDesc(id,pageable)
     fun findByCarIdAsc(id:Long,pageable: Pageable)=checkUpRepository.findByCarIdOrderByPerformedAtAsc(id,pageable)
+
+    fun deleteByCarId(id:Long)=checkUpRepository.deleteByCarId(id)
+
+    fun deleteById(id:Long)=checkUpRepository.deleteById(id)
+
 }
