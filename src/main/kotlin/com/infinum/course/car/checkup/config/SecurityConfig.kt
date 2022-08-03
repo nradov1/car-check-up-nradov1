@@ -25,14 +25,14 @@ class SecurityConfig {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
             authorizeRequests {
-                authorize( HttpMethod.POST,"/api/v1/car", hasAnyAuthority("admin","user"))
-                authorize( HttpMethod.GET, "/api/v1/car/paged", hasAuthority("admin"))
-                authorize( HttpMethod.GET, "/api/v1/car/{id}", hasAnyAuthority("admin","user"))
-                authorize( HttpMethod.POST,"/api/v1/create-checkup", hasAuthority("admin"))
-                authorize( HttpMethod.GET, "/api/v1/car/{carId}/checkup", hasAnyAuthority("admin","user"))
+                authorize( HttpMethod.POST,"/api/v1/car", hasAnyAuthority("SCOPE_ADMIN","SCOPE_USER"))
+                authorize( HttpMethod.GET, "/api/v1/car/paged", hasAuthority("SCOPE_ADMIN"))
+                authorize( HttpMethod.GET, "/api/v1/car/{id}", hasAnyAuthority("SCOPE_ADMIN","SCOPE_USER"))
+                authorize( HttpMethod.POST,"/api/v1/create-checkup", hasAuthority("SCOPE_ADMIN"))
+                authorize( HttpMethod.GET, "/api/v1/car/{carId}/checkup", hasAnyAuthority("SCOPE_ADMIN","SCOPE_USER"))
                 authorize( HttpMethod.GET, "/api/v1/manufacturer-analytics", permitAll)
-                authorize( HttpMethod.GET, "/api/v1/car/delete", hasAuthority("admin"))
-                authorize( HttpMethod.GET, "/api/v1/checkups/delete", hasAuthority("admin"))
+                authorize( HttpMethod.GET, "/api/v1/car/delete", hasAuthority("SCOPE_ADMIN"))
+                authorize( HttpMethod.GET, "/api/v1/checkups/delete", hasAuthority("SCOPE_ADMIN"))
                 authorize(anyRequest, authenticated)
             }
             oauth2ResourceServer {

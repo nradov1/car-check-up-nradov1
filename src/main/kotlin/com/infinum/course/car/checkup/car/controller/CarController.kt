@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PagedResourcesAssembler
 import org.springframework.hateoas.PagedModel
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import java.net.URI
 
 
 @RequestMapping("/api/v1/car")
@@ -51,10 +53,7 @@ class CarController(
     @ResponseBody
     fun createCar(@RequestBody car: CarDetails): ResponseEntity<Unit>{
         val carDto = carService.addCar(car)
-        val location = ServletUriComponentsBuilder.fromCurrentRequest()
-            .path("/{id}")
-            .buildAndExpand(mapOf("id" to carDto.id))
-            .toUri()
+        val location: URI = linkTo(methodOn(CarController::class.java).createCar(car)).toUri()
         return ResponseEntity.created(location).build()
     }
 

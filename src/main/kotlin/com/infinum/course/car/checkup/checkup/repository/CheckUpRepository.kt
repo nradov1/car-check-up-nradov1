@@ -13,9 +13,8 @@ import org.springframework.transaction.annotation.Transactional
 interface CheckUpRepository:JpaRepository<CarCheckUp,Long>{
     fun findByCar(car: Car): MutableList<CarCheckUp>
 
-    fun findByCarIdOrderByPerformedAtDesc(car_id:Long,pageable: Pageable): Page<CarCheckUp>
+    fun findByCarId(car_id:Long,pageable: Pageable): Page<CarCheckUp>
 
-    fun findByCarIdOrderByPerformedAtAsc(car_id:Long,pageable: Pageable): Page<CarCheckUp>
 
     fun save(checkUp : CarCheckUp): CarCheckUp
 

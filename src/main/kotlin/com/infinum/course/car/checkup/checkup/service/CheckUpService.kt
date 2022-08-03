@@ -23,8 +23,7 @@ class CheckUpService(
     }
     fun findById(id:Long) = checkUpRepository.findById(id)
 
-    fun findByCarId(id:Long,pageable: Pageable)=checkUpRepository.findByCarIdOrderByPerformedAtDesc(id,pageable)
-    fun findByCarIdAsc(id:Long,pageable: Pageable)=checkUpRepository.findByCarIdOrderByPerformedAtAsc(id,pageable)
+    fun findByCarId(id:Long,pageable: Pageable)=checkUpRepository.findByCarId(id,pageable)
 
     fun deleteByCarId(id:Long)=checkUpRepository.deleteByCarId(id)
 

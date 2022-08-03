@@ -29,18 +29,6 @@ class CarCheckUpController(private val checkUpService: CheckUpService,
             )
         )
     }
-    @GetMapping("/asc")
-    @ResponseBody
-    fun getAllCheckupsAsc(@PathVariable("carId") carId: Long,
-                       pageable: Pageable,
-                       pagedResourcesAssembler: PagedResourcesAssembler<CarCheckUp>
-    ): ResponseEntity<PagedModel<CheckUpResource>> {
-        return ResponseEntity.ok(
-            pagedResourcesAssembler.toModel(
-                checkUpService.findByCarIdAsc(carId, pageable),
-                checkUpResourceAssembler
-            )
-        )
-    }
+
 
 }
