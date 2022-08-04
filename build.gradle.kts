@@ -31,12 +31,15 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
     implementation("org.springdoc:springdoc-openapi-hateoas:1.6.9")
-
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mock-server:mockserver-spring-test-listener:5.11.2")
+    testImplementation("org.springframework.security:spring-security-test")
 
 }
 

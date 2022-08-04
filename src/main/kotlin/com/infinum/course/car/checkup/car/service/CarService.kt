@@ -44,4 +44,9 @@ class CarService(
         carModelRepository.deleteAll()
         carModelRepository.saveAll(models)
     }
+
+    fun deleteById(id:Long):Car?{
+        checkUpRepository.deleteByCarId(id)
+        return carRepository.deleteById(id)
+    }
 }
